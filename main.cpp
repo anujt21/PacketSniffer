@@ -1,15 +1,18 @@
+#include <PacketHandler.h>
+#include <iostream>
+#include <optional>
 #include <pcap.h>
 #include <pcap/pcap.h>
 #include <stdio.h>
 #include <string.h>
+#include <string>
 #include <sys/types.h>
-#define SNAP_LEN
 
 int main(int argc, char *argv[]) {
 
   // Initialize variables
   char errbuf[PCAP_ERRBUF_SIZE];
-  char filter_exp[] = "";
+  char filter_exp[] = "ip";
   pcap_if_t *alldevs;
   pcap_if_t *dev;
   pcap_t *device_handle;
@@ -18,6 +21,35 @@ int main(int argc, char *argv[]) {
   bpf_u_int32 net;
   struct pcap_pkthdr header;
   const u_char *packet;
+  int num_packets = 100;
+
+  std::optional<std::string> pcap_file;
+
+  for (int i = 0; i < argc; i++) {
+
+    std::string arg = argv[i];
+
+    if (arg == "-h" || arg == "--help") {
+      std::cout << "Packet sniffer [OPTIONS]\n";
+      std::cout << "  -f, --file=FILENAME   Read packets from PCAP file.\n";
+      std::cout << "  -h, --help            Display this help message.\n";
+      return 0;
+    } else if (arg == "-f" && i + 1 < argc) {
+      pcap_file = argv[++i];
+    } else if (arg.substr(0, 7) == "--file=") {
+      pcap_file = arg.substr(7);
+    }
+  }
+
+  // Print usage info
+  print_app_usage();
+
+  // Set capture mode
+  if (pcap_file) {
+    std::cout << "Reading from file: " << *pcap_file << std::endl;
+  } else {
+    std::cout << "Using live capture..." << std::endl;
+  }
 
   // Find the device
   if (!pcap_findalldevs(&alldevs, errbuf)) {
@@ -71,8 +103,8 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  // int success = pcap_loop(device_handle, 100, packet_handler, user_data);
-  //
+  pcap_loop(device_handle, num_packets, handle_packet, NULL);
+
   // if (success == -1) {
   //   fprintf(stderr, "Error in pcap_loop: %s\n", errbuf);
   //   return 2;
@@ -80,6 +112,8 @@ int main(int argc, char *argv[]) {
   //   printf("pcap_loop terminated.");
   // }
 
-  pcap_freealldevs(alldevs);
+  // cleanup
+  pcap_freecode(&fp);
+  pcap_close(device_handle);
   return (0);
 }

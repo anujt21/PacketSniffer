@@ -3,11 +3,13 @@
 
 #include <netinet/in.h>
 #include <pcap.h>
-#include <stdio.h>
 #include <sys/types.h>
 
 // Ethernet addresses are of 6 bytes
 #define ETHER_ADDR_LEN 6
+
+// Ethernet header size
+#define SIZE_ETHERNET 14
 
 // Ethernet header
 struct snifff_ethernet {
