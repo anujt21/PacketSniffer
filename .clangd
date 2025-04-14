@@ -1,0 +1,16 @@
+CompileFlags:
+  # Treat .h files as C++ headers
+  Add:
+    - -xc++
+    - -Wall
+    - -Wextra
+    - -Wpedantic
+    - -std=c++17
+
+  # Suppress some common warnings that might be noisy
+  Warnings:
+    - -Wno-unused-parameter
+    - -Wno-missing-field-initializers
+
+# Path to compilation database (optional, CMake generates this)
+# CompilationDatabase: build/
