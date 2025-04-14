@@ -9,8 +9,8 @@
 #define APP_NAME "PacketSniffer"
 #define APP_DESC "Sniff packets using libpcap"
 
-void handle_packet(u_char *args, const struct pcap_pkthdr *header,
-                   const u_char *packet);
+void handle_eth_packet(u_char *args, const struct pcap_pkthdr *header,
+                       const u_char *packet);
 
 void print_payload(const u_char *payload, int len);
 

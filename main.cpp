@@ -6,6 +6,7 @@
 #include "DeviceHandler.h"
 #include "PacketHandler.h"
 #include <iostream>
+#include <memory>
 #include <optional>
 #include <pcap.h>
 #include <pcap/pcap.h>
@@ -64,7 +65,8 @@ int main(int argc, char *argv[]) {
     std::cout << "Using live capture to read " << num_packets << std::endl;
   }
 
-  DeviceHandler *device_handler = new DeviceHandler();
+  std::unique_ptr<DeviceHandler> device_handler =
+      std::make_unique<DeviceHandler>();
 
   if (filter.length() > 0) {
     device_handler->set_filter_exp(filter);
@@ -81,6 +83,7 @@ int main(int argc, char *argv[]) {
     };
   }
 
+  // Caputre packets
   if (device_handler->capture_packets(num_packets, user_data) == -1) {
     return 1;
   }

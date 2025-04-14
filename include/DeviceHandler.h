@@ -1,3 +1,6 @@
+#ifndef DEVICE_HANDLER_H
+#define DEVICE_HANDLER_H
+
 #include "PacketHandler.h"
 #include <cstdio>
 #include <iostream>
@@ -42,3 +45,5 @@ public:
 
   void set_filter_exp(std::string f_expression) { filter_exp = f_expression; };
 };
+
+#endif // !DEVICE_HANDLER_H

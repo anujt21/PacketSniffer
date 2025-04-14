@@ -86,8 +86,8 @@ void print_payload(const u_char *payload, int len) {
   }
 }
 
-void handle_packet(u_char *args, const struct pcap_pkthdr *header,
-                   const u_char *packet) {
+void handle_eth_packet(u_char *args, const struct pcap_pkthdr *header,
+                       const u_char *packet) {
 
   static int packet_counter = 1;
   int size_ip, size_tcp, size_payload;
@@ -144,7 +144,7 @@ void handle_packet(u_char *args, const struct pcap_pkthdr *header,
   printf("Desitnation port: %d\n", ntohs(tcp->th_dport));
 
   payload = (u_char *)(packet + SIZE_ETHERNET + size_tcp + size_ip);
-  size_payload = (ip->ip_len) - (size_ip + size_tcp);
+  size_payload = ntohs(ip->ip_len) - (size_ip + size_tcp);
 
   if (size_payload > 0) {
     printf("  Payload (%d bytes):\n", size_payload);
