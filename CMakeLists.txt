@@ -7,8 +7,17 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Set C standard
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # Include directories
 include_directories(${CMAKE_SOURCE_DIR}/include)
+
+# Force C++ mode (for tools like clang)
+add_compile_options(
+    -x c++
+)
 
 # Find the libpcap package
 find_library(PCAP_LIBRARY pcap REQUIRED)
