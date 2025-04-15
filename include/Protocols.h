@@ -11,15 +11,23 @@
 // Ethernet header size
 #define SIZE_ETHERNET 14
 
+/************************************************************************************
+ * Link layer
+ ************************************************************************************/
+
 // Ethernet header
-struct snifff_ethernet {
+struct eth_hdr {
   u_char ether_dhost[ETHER_ADDR_LEN];
   u_char ether_shost[ETHER_ADDR_LEN];
   u_short ether_type;
 };
 
+/************************************************************************************
+ * Network layer
+ ************************************************************************************/
+
 // IP header
-struct sniff_ip {
+struct ip_hdr {
   u_char ip_vhl;                 // version << 4 | header length >> 2
   u_char ip_tos;                 // types of service
   u_short ip_len;                // total length
@@ -37,8 +45,15 @@ struct sniff_ip {
 #define IP_HL(ip) (((ip)->ip_vhl) & 0x0f)
 #define IP_V(ip) (((ip)->ip_vhl) >> 4)
 
+// ECPRI header
+struct ecpri_hdr {};
+
+/************************************************************************************
+ * Transport layer
+ ************************************************************************************/
+
 // TCP header
-struct sniff_tcp {
+struct tcp_hdr {
   u_short th_sport; // source sport
   u_short th_dport; // dest sport
   u_int th_seq;     // sequence number
