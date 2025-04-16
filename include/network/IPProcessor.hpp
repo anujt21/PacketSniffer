@@ -11,10 +11,10 @@ public:
   void process(const u_int8_t *packet, size_t length,
                std::shared_ptr<PacketContext> context) override;
 
-  std::string getName() const override { return "IPv4"; }
+  std::string get_name() const override { return "IPv4"; }
 
   // Register all IP protocol handlers
-  static void registerAllHandlers();
+  void register_handlers() override;
 };
 
 #endif // !IP_PROCESSOR_H

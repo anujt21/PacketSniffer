@@ -3,56 +3,80 @@
 #include <memory>
 #include <sys/types.h>
 
-void ProtocolRegistry::registerEtherType(
-    u_int16_t etherType, std::shared_ptr<PacketProcessor> processor) {
-  etherTypeProcessors[etherType] = processor;
+void ProtocolRegistry::register_link(
+    int link_type, std::shared_ptr<PacketProcessor> processor) {
+  network_processors[link_type] = processor;
+}
+void ProtocolRegistry::register_network(
+    u_int16_t network_type, std::shared_ptr<PacketProcessor> processor) {
+  network_processors[network_type] = processor;
 }
 
-void ProtocolRegistry::registerIPProtocol(
-    u_int8_t protocol, std::shared_ptr<PacketProcessor> processor) {
-  ipProtocolProcessors[protocol] = processor;
+void ProtocolRegistry::register_transport(
+    u_int8_t transport_type, std::shared_ptr<PacketProcessor> processor) {
+  transport_processors[transport_type] = processor;
 }
 
 std::shared_ptr<PacketProcessor>
-ProtocolRegistry::getEtherTypeProcessor(u_int16_t etherType) {
-  auto it = etherTypeProcessors.find(etherType);
-  if (it != etherTypeProcessors.end()) {
+ProtocolRegistry::get_link_processor(int link_type) {
+  auto it = link_processors.find(link_type);
+  if (it != link_processors.end()) {
     return it->second;
   }
   return nullptr;
 }
 
 std::shared_ptr<PacketProcessor>
-ProtocolRegistry::getipProtocolProcessors(u_int8_t protocol) {
-  auto it = ipProtocolProcessors.find(protocol);
-  if (it != ipProtocolProcessors.end()) {
+ProtocolRegistry::get_network_processor(u_int16_t network_type) {
+  auto it = network_processors.find(network_type);
+  if (it != network_processors.end()) {
     return it->second;
   }
   return nullptr;
 }
 
-void ProtocolRegistry::listRegisteredProcessors() const {
-  // Registered ethernet processors
-  std::cout << "Registered ethernet handlers: \n";
-  for (const auto &[etherType, processor] : etherTypeProcessors) {
+std::shared_ptr<PacketProcessor>
+ProtocolRegistry::get_transport_processor(u_int8_t transport_type) {
+  auto it = transport_processors.find(transport_type);
+  if (it != transport_processors.end()) {
+    return it->second;
+  }
+  return nullptr;
+}
+
+void ProtocolRegistry::list_registered_handlers() const {
+  // Registered link processors
+  std::cout << "Registered link handlers: \n";
+  for (const auto &[link_type, processor] : link_processors) {
     if (processor) {
-      std::cout << "Ethernet type: " << etherType;
-      std::cout << ", processor name: " << processor->getName() << std::endl;
+      std::cout << "Link type: " << link_type;
+      std::cout << ", processor name: " << processor->get_name() << std::endl;
     } else {
-      std::cout << "Ethernet type: " << etherType;
+      std::cout << "Ethernet type: " << link_type;
+      std::cout << ", processor name: Not found" << std::endl;
+    }
+  }
+  // Registered network processors
+  std::cout << "Registered network handlers: \n";
+  for (const auto &[network_type, processor] : network_processors) {
+    if (processor) {
+      std::cout << "Network type: " << network_type;
+      std::cout << ", processor name: " << processor->get_name() << std::endl;
+    } else {
+      std::cout << "Network type: " << network_type;
       std::cout << ", processor name: Not found" << std::endl;
     }
   }
 
-  // Registered ip protocol processors
-  std::cout << "Registered ip protocol handlers: \n";
-  for (const auto &[protocol, processor] : ipProtocolProcessors) {
+  // Registered transport processors
+  std::cout << "Registered tansport handlers: \n";
+  for (const auto &[transport_type, processor] : transport_processors) {
     if (processor) {
-      std::cout << "Protocl type: " << protocol;
-      std::cout << ", processor name: " << processor->getName() << std::endl;
+      std::cout << "Protocl type: " << transport_type;
+      std::cout << ", processor name: " << processor->get_name() << std::endl;
     } else {
-      std::cout << "Protocl type: " << protocol;
-      std::cout << ", processor name: " << processor->getName() << std::endl;
+      std::cout << "Protocl type: " << transport_type;
+      std::cout << ", processor name: Not found" << std::endl;
     }
   }
 }

@@ -6,14 +6,14 @@
 #include <memory>
 #include <sys/types.h>
 
-class TCPPrcoessor : public PacketProcessor {
+class TCPProcessor : public PacketProcessor {
 public:
   void process(const u_int8_t *packet, size_t length,
                std::shared_ptr<PacketContext> context) override;
 
-  std::string getName() const override { return "TCP"; }
+  std::string get_name() const override { return "TCP"; }
 
-  static void registerAllHandlers();
+  void register_handlers() override;
 };
 
 #endif // !DEBUG

@@ -2,6 +2,7 @@
 #define PACKET_PROCESSOR_H
 
 #include <cstdint>
+#include <iostream>
 #include <memory>
 #include <pcap.h>
 #include <pcap/dlt.h>
@@ -13,7 +14,9 @@ class PacketContext {
 public:
   bool verbose = false;
   u_int64_t packet_count = 0;
-  int etherType = DLT_EN10MB;
+  int link_type = DLT_EN10MB;
+  int ip_size = 0;
+  int ip_payload_len = 0;
 };
 
 class PacketProcessor {
@@ -23,7 +26,9 @@ public:
   virtual void process(const u_int8_t *packet, size_t length,
                        std::shared_ptr<PacketContext> context) = 0;
 
-  virtual std::string getName() const = 0;
+  virtual std::string get_name() const = 0;
+
+  virtual void register_handlers() {};
 };
 
 // Packet handler function

@@ -11,7 +11,7 @@ public:
   Singleton &operator=(const Singleton &) = delete;
 
   // Get the instance of the Singleton
-  static T &getInstance() {
+  static T &get_instance() {
     std::call_once(flag, []() { instance.reset(new T()); });
     return *instance;
   }

@@ -15,16 +15,13 @@ void packet_handler(u_char *user_data, const struct pcap_pkthdr *pkthdr,
 
   context->packet_count++;
 
-  auto &registry = ProtocolRegistry::getInstance();
-  auto ethernet_processor = registry.getEtherTypeProcessor(context->etherType);
+  auto &registry = ProtocolRegistry::get_instance();
+  auto link_processor = registry.get_link_processor(context->link_type);
 
-  if (ethernet_processor) {
-    ethernet_processor->process(packet, pkthdr->len, context);
+  if (link_processor) {
+    link_processor->register_handlers();
+    link_processor->process(packet, pkthdr->len, context);
+  } else {
+    std::cerr << "Ethernet processor not found" << std::endl;
   }
-}
-
-void EthernetProcessor::registerAllHandlers() {
-  auto &registry = ProtocolRegistry::getInstance();
-
-  registry.registerEtherType(ETHERTYPE_IP, std::make_shared<IPProcessor>());
 }

@@ -11,10 +11,10 @@ public:
   void process(const u_int8_t *packet, size_t length,
                std::shared_ptr<PacketContext> context) override;
 
-  std::string getName() const override { return "Ethernet"; }
+  std::string get_name() const override { return "Ethernet"; }
 
   // Register all proctocol handlers
-  static void registerAllHandlers();
+  void register_handlers() override;
 };
 
 #endif // !ETHERNET_PROCESSOR_H
