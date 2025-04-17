@@ -1,7 +1,8 @@
-#include "transport/TCPProcessor.hpp"
+#include "transport/TCPProcessor.h"
 #include "Protocols.h"
-#include "base/PacketProcessor.hpp"
-#include "base/ProtocolRegistry.hpp"
+#include "base/PacketProcessor.h"
+#include "base/ProtocolRegistry.h"
+#include "utils/PrintData.h"
 #include <memory>
 #include <sys/types.h>
 
@@ -23,5 +24,12 @@ void TCPProcessor::process(const u_int8_t *packet, size_t length,
   }
 
   u_char *payload = (u_char *)(packet + tcp_size);
-  int payload_size = context->ip_payload_len - tcp_size
+  int payload_size = context->ip_payload_len - context->ip_size - tcp_size;
+
+  if (payload_size > 0) {
+    std::cout << "Payload (" << payload_size << " bytes): \n";
+    print_payload(payload, payload_size);
+  }
 }
+
+void TCPProcessor::register_handlers() { return; }

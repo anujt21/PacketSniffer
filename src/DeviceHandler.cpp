@@ -1,4 +1,5 @@
 #include "DeviceHandler.h"
+#include "base/PacketProcessor.h"
 #include <cstdio>
 #include <iostream>
 #include <ostream>
@@ -83,7 +84,7 @@ int DeviceHandler::capture_packets(int num_packets, u_char *user_data) {
     std::cerr << "Handle is a null pointer." << std::endl;
     return -1;
   }
-  if (pcap_loop(handle, num_packets, handle_eth_packet, user_data) == -1) {
+  if (pcap_loop(handle, num_packets, packet_handler, user_data) == -1) {
     std::cerr << "Error in capturing packets: " << errbuf;
     return -1;
   };

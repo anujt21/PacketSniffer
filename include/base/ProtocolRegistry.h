@@ -1,8 +1,8 @@
 #ifndef PROTOCOL_REGISTRY_H
 #define PROTOCOL_REGISTRY_H
 
-#include "PacketProcessor.hpp"
-#include "utils/Singleton.hpp"
+#include "PacketProcessor.h"
+#include "utils/Singleton.h"
 #include <cstdint>
 #include <map>
 #include <memory>
@@ -30,11 +30,11 @@ public:
 
   // Display all registered processors (for debugging)
   void list_registered_handlers() const;
+  ~ProtocolRegistry() = default;
 
 private:
   // Private constructor and destructor (accessed by Singleton)
   ProtocolRegistry() = default;
-  ~ProtocolRegistry() = default;
 
   // Maps to store processors
   std::map<int, std::shared_ptr<PacketProcessor>> link_processors;

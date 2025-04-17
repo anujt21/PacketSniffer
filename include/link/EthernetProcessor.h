@@ -1,7 +1,7 @@
 #ifndef ETHERNET_PROCESSOR_H
 #define ETHERNET_PROCESSOR_H
 
-#include "base/PacketProcessor.hpp"
+#include "base/PacketProcessor.h"
 #include <cstddef>
 #include <memory>
 #include <netinet/ether.h>

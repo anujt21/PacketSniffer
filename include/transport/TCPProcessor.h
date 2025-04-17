@@ -1,7 +1,7 @@
 #ifndef TCP_PROCESSOR_H
 #define TCP_PROCESSOR_H
 
-#include "base/PacketProcessor.hpp"
+#include "base/PacketProcessor.h"
 #include <cstddef>
 #include <memory>
 #include <sys/types.h>

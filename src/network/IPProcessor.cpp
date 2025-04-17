@@ -1,9 +1,9 @@
-#include "network/IPProcessor.hpp"
+#include "network/IPProcessor.h"
 #include "Protocols.h"
-#include "base/PacketProcessor.hpp"
-#include "base/ProtocolRegistry.hpp"
-#include "link/EthernetProcessor.hpp"
-#include "transport/TCPProcessor.hpp"
+#include "base/PacketProcessor.h"
+#include "base/ProtocolRegistry.h"
+#include "link/EthernetProcessor.h"
+#include "transport/TCPProcessor.h"
 #include <arpa/inet.h>
 #include <cstddef>
 #include <memory>
@@ -19,7 +19,7 @@ void IPProcessor::process(const u_int8_t *packet, size_t length,
   const struct ip_hdr *ip = (struct ip_hdr *)(packet);
   int ip_size = IP_HL(ip) * 4;
   context->ip_size = ip_size;
-  context->ip_payload_len = ip->ip_len;
+  context->ip_payload_len = ntohs(ip->ip_len);
   if (ip_size < 20) {
     std::cerr << "Invalid IP header length: " << ip_size << " bytes"
               << std::endl;

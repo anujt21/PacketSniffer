@@ -1,7 +1,7 @@
 #ifndef IP_PROCESSOR_H
 #define IP_PROCESSOR_H
 
-#include "base/PacketProcessor.hpp"
+#include "base/PacketProcessor.h"
 #include <cstddef>
 #include <memory>
 #include <netinet/ip.h>

@@ -1,7 +1,7 @@
-#include "link/EthernetProcessor.hpp"
+#include "link/EthernetProcessor.h"
 #include "Protocols.h"
-#include "base/ProtocolRegistry.hpp"
-#include "network/IPProcessor.hpp"
+#include "base/ProtocolRegistry.h"
+#include "network/IPProcessor.h"
 #include <cstddef>
 #include <memory>
 

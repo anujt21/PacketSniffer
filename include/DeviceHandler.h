@@ -1,7 +1,6 @@
 #ifndef DEVICE_HANDLER_H
 #define DEVICE_HANDLER_H
 
-#include "PacketHandler.h"
 #include <cstdio>
 #include <iostream>
 #include <pcap.h>

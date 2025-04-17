@@ -4,7 +4,8 @@
 // TODO: Remove the ethernet check and make the program protocol agnostic
 
 #include "DeviceHandler.h"
-#include "PacketHandler.h"
+#include "base/PacketProcessor.h"
+#include "utils/PrintData.h"
 #include <iostream>
 #include <memory>
 #include <optional>
@@ -22,6 +23,9 @@ int main(int argc, char *argv[]) {
   int num_packets = 0;
   bool live_mode = true;
   u_char *user_data = nullptr;
+  std::shared_ptr<PacketContext> context = std::make_shared<PacketContext>();
+  std::unique_ptr<DeviceHandler> device_handler =
+      std::make_unique<DeviceHandler>();
 
   for (int i = 0; i < argc; i++) {
 
@@ -34,8 +38,9 @@ int main(int argc, char *argv[]) {
                    "packets.\n";
       std::cout << "  -n, --num_packets=NUMBER  Number of packets to read "
                    "(default 0).\n";
+      std::cout << "  -verbose                  Display information about "
+                   "packet headers.\n";
       std::cout << "  -h, --help                Display this help message.\n";
-
       return 0;
     } else if (arg == "-f" && i + 1 < argc) {
       pcap_file = argv[++i];
@@ -49,6 +54,8 @@ int main(int argc, char *argv[]) {
       num_packets = std::stoi(argv[++i]);
     } else if (arg.substr(0, 14) == "--num_packets") {
       num_packets = std::stoi(arg.substr(14));
+    } else if (arg == "-verbose") {
+      context->verbose = true;
     }
   }
 
@@ -65,13 +72,12 @@ int main(int argc, char *argv[]) {
     std::cout << "Using live capture to read " << num_packets << std::endl;
   }
 
-  std::unique_ptr<DeviceHandler> device_handler =
-      std::make_unique<DeviceHandler>();
-
+  // Apply filter
   if (filter.length() > 0) {
     device_handler->set_filter_exp(filter);
   }
 
+  // Setup device handler
   if (live_mode) {
     if (device_handler->open_live_device() == -1) {
       return 1;
@@ -84,6 +90,7 @@ int main(int argc, char *argv[]) {
   }
 
   // Caputre packets
+  user_data = reinterpret_cast<u_char *>(context.get());
   if (device_handler->capture_packets(num_packets, user_data) == -1) {
     return 1;
   }
