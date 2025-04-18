@@ -28,8 +28,9 @@ void IPProcessor::process(const u_int8_t *packet, size_t length,
 
   if (context->verbose) {
     std::cout << "Protocol: IP\n";
-    std::cout << "From:       " << inet_ntoa(ip->ip_src);
-    std::cout << "To:         " << inet_ntoa(ip->ip_dst);
+    std::cout << "From:       " << inet_ntoa(ip->ip_src) << "\n";
+    std::cout << "To:         " << inet_ntoa(ip->ip_dst) << "\n";
+    std::cout << "\n";
   }
 
   const u_int8_t *payload = packet + ip_size;
@@ -41,7 +42,9 @@ void IPProcessor::process(const u_int8_t *packet, size_t length,
   if (transport_processor) {
     transport_processor->process(payload, payload_length, context);
   } else {
-    std::cerr << "Transport processor not found for tranpsort type" << ip->ip_p;
+    std::cerr << "Transport processor not found for tranpsort type "
+              << static_cast<int>(ip->ip_p) << "\n";
+    std::cerr << "\n";
     return;
   }
 }

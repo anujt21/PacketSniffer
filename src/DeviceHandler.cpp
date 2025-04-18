@@ -1,13 +1,16 @@
 #include "DeviceHandler.h"
 #include "base/PacketProcessor.h"
+#include "base/ProtocolRegistry.h"
+#include "link/EthernetProcessor.h"
 #include <cstdio>
 #include <iostream>
+#include <memory>
 #include <ostream>
 #include <pcap/dlt.h>
 #include <pcap/pcap.h>
 #include <sys/types.h>
 
-int DeviceHandler::open_live_device() {
+int DeviceHandler::open_live_device(std::shared_ptr<PacketContext> context) {
 
   pcap_if_t *alldevs = nullptr;
 
@@ -40,11 +43,8 @@ int DeviceHandler::open_live_device() {
     return -1;
   }
 
-  if (!ethernet_handle_check(handle)) {
-    std::cerr << "Device " << device_name << "does not provide ethernet headers"
-              << std::endl;
-    return -1;
-  }
+  context->link_type = get_datalink(handle);
+
   // Compile and set the BPF filter
   if (filter_exp.length() > 0) {
     if (pcap_compile(handle, &fp, const_cast<char *>(filter_exp.c_str()), 0,
@@ -64,17 +64,20 @@ int DeviceHandler::open_live_device() {
   return 0;
 }
 
-int DeviceHandler::open_pcap_file(const char *filename) {
+int DeviceHandler::open_pcap_file(const char *filename,
+                                  std::shared_ptr<PacketContext> context) {
 
   handle = pcap_open_offline(filename, errbuf);
-
   if (handle == nullptr) {
     std::cerr << "Could not open pcap file " << filename << ": " << errbuf
               << std::endl;
     return -1;
   }
-
   std::cout << "Opened pcap file: " << filename << std::endl;
+
+  // Set link type in context and register the corresponding link processor
+  context->link_type = get_datalink(handle);
+
   return 0;
 }
 
