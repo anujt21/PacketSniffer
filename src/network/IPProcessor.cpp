@@ -18,6 +18,8 @@ void IPProcessor::process(const u_int8_t *packet, size_t length,
   }
   const struct ip_hdr *ip = (struct ip_hdr *)(packet);
   int ip_size = IP_HL(ip) * 4;
+
+  // TODO: Remove dependency on context
   context->ip_size = ip_size;
   context->ip_payload_len = ntohs(ip->ip_len);
   if (ip_size < 20) {
@@ -30,7 +32,6 @@ void IPProcessor::process(const u_int8_t *packet, size_t length,
     std::cout << "Protocol: IP\n";
     std::cout << "From:       " << inet_ntoa(ip->ip_src) << "\n";
     std::cout << "To:         " << inet_ntoa(ip->ip_dst) << "\n";
-    std::cout << "\n";
   }
 
   const u_int8_t *payload = packet + ip_size;

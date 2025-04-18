@@ -46,7 +46,15 @@ struct ip_hdr {
 #define IP_V(ip) (((ip)->ip_vhl) >> 4)
 
 // ECPRI header
-struct ecpri_hdr {};
+#define ETHERTYPE_ECPRI 0xAEFE
+
+struct ecpri_hdr {
+  u_char ecpri_prc;
+  u_char ecpri_msg_type;
+  u_short ecpri_size;
+};
+#define ECPRI_REV(ecpri) (((ecpri)->ecpri_prc) >> 4)
+#define ECPRI_C(ecpri) (((ecpri)->ecpri_prc) & 0x01)
 
 /************************************************************************************
  * Transport layer
