@@ -79,12 +79,12 @@ int main(int argc, char *argv[]) {
 
   // Setup device handler
   if (live_mode) {
-    if (device_handler->open_live_device() == -1) {
+    if (device_handler->open_live_device(context) == -1) {
       return 1;
     };
   } else {
     if (device_handler->open_pcap_file(
-            const_cast<char *>(pcap_file_filename.c_str())) == -1) {
+            const_cast<char *>(pcap_file_filename.c_str()), context) == -1) {
       return 1;
     };
   }

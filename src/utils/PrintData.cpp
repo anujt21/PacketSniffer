@@ -1,8 +1,11 @@
 #include "utils/PrintData.h"
 #include <cctype>
+#include <iomanip>
+#include <iostream>
 
 void print_app_usage() {
-  printf("%s - %s\n", APP_NAME, APP_DESC);
+  std::cout << APP_NAME << " - " << APP_DESC << "\n";
+  std::cout << "\n";
   return;
 }
 
@@ -12,7 +15,7 @@ void print_hex_ascii_line(const u_char *payload, int len, int offset) {
   const u_char *ch = payload;
 
   // offset
-  printf("%05d  ", offset);
+  printf("%05d ", offset);
 
   // hex
   for (i = 0; i < len; i++) {
@@ -20,31 +23,31 @@ void print_hex_ascii_line(const u_char *payload, int len, int offset) {
     ch++;
 
     if (i == 7)
-      printf(" ");
+      std::cout << " ";
   }
 
   if (len < 8)
-    printf(" ");
+    std::cout << " ";
 
   if (len < 16) {
     gap = 16 - len;
-    printf("%*s", gap * 3, "");
+    std::cout << std::setw(gap * 3) << "";
   }
 
-  printf("  ");
+  std::cout << " ";
 
   // ascii
   ch = payload;
   for (i = 0; i < len; i++) {
     if (isprint(*ch)) {
-      printf("%c", *ch);
+      std::cout << static_cast<char>(*ch);
     } else {
-      printf(".");
+      std::cout << ".";
     }
     ch++;
   }
 
-  printf("\n");
+  std::cout << "\n";
 
   return;
 }
@@ -77,4 +80,5 @@ void print_payload(const u_char *payload, int len) {
       break;
     }
   }
+  std::cout << "\n";
 }

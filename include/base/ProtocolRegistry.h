@@ -2,6 +2,7 @@
 #define PROTOCOL_REGISTRY_H
 
 #include "PacketProcessor.h"
+#include "link/EthernetProcessor.h"
 #include "utils/Singleton.h"
 #include <cstdint>
 #include <map>
@@ -34,7 +35,7 @@ public:
 
 private:
   // Private constructor and destructor (accessed by Singleton)
-  ProtocolRegistry() = default;
+  ProtocolRegistry();
 
   // Maps to store processors
   std::map<int, std::shared_ptr<PacketProcessor>> link_processors;

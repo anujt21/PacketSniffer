@@ -1,8 +1,10 @@
 #ifndef DEVICE_HANDLER_H
 #define DEVICE_HANDLER_H
 
+#include "base/PacketProcessor.h"
 #include <cstdio>
 #include <iostream>
+#include <memory>
 #include <pcap.h>
 #include <pcap/dlt.h>
 #include <pcap/pcap.h>
@@ -28,13 +30,12 @@ public:
     pcap_close(handle);
   }
 
-  int open_live_device();
-  int open_pcap_file(const char *filename);
+  int open_live_device(std::shared_ptr<PacketContext> context);
+  int open_pcap_file(const char *filename,
+                     std::shared_ptr<PacketContext> context);
   int capture_packets(int num_packets, u_char *user_data);
 
-  bool ethernet_handle_check(pcap_t *handle) {
-    return pcap_datalink(handle) == DLT_EN10MB;
-  }
+  int get_datalink(pcap_t *handle) { return pcap_datalink(handle); }
 
   pcap_t *get_handler() { return handle; };
   std::string get_device_name() { return device_name; };

@@ -3,6 +3,10 @@
 #include <memory>
 #include <sys/types.h>
 
+ProtocolRegistry::ProtocolRegistry() {
+  link_processors[DLT_EN10MB] = std::make_shared<EthernetProcessor>();
+}
+
 void ProtocolRegistry::register_link(
     int link_type, std::shared_ptr<PacketProcessor> processor) {
   network_processors[link_type] = processor;

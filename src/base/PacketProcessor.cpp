@@ -20,6 +20,7 @@ void packet_handler(u_char *user_data, const struct pcap_pkthdr *pkthdr,
     link_processor->register_handlers();
     link_processor->process(packet, pkthdr->len, context);
   } else {
-    std::cerr << "Ethernet processor not found" << std::endl;
+    std::cerr << "Link processor not found with link type: "
+              << context->link_type << std::endl;
   }
 }
