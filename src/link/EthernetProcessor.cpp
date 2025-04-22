@@ -1,6 +1,7 @@
 #include "link/EthernetProcessor.h"
 #include "Protocols.h"
 #include "base/ProtocolRegistry.h"
+#include "network/ARPProcessor.h"
 #include "network/EcpriProcessor.h"
 #include "network/IPProcessor.h"
 #include <cstddef>
@@ -40,6 +41,7 @@ void EthernetProcessor::register_handlers() {
   registry.register_network(ETHERTYPE_IP, std::make_shared<IPProcessor>());
   registry.register_network(ETHERTYPE_ECPRI,
                             std::make_shared<ECPRIProcessor>());
+  registry.register_network(ETHERTYPE_ARP, std::make_shared<ARPProcessor>());
 }
 
 void EthernetProcessor::print_header(const struct eth_hdr *eth_header) {
@@ -90,4 +92,5 @@ void EthernetProcessor::print_header(const struct eth_hdr *eth_header) {
   default:
     std::cout << "Protocol: Other" << std::endl;
   }
+  std::cout << "\n";
 }

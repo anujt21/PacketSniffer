@@ -5,7 +5,7 @@
 
 ProtocolRegistry::ProtocolRegistry() {
   link_processors[DLT_EN10MB] = std::make_shared<EthernetProcessor>();
-  link_processors[DLT_PPP] = std::make_shared<typename Tp>(Args && args...)
+  // link_processors[DLT_PPP] = std::make_shared<>(Args && args...)
 }
 
 void ProtocolRegistry::register_link(

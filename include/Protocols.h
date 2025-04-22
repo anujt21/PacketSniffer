@@ -62,18 +62,20 @@ struct arp_hdr {
   u_short arp_ptype;
   u_char arp_hlen;
   u_char arp_plen;
-  u_short arp_op;
-  struct in_addr arp_src_haddr32;
-  u_short arp_src_haddr16;
-  struct in_addr arp_src_paddr;
-  struct in_addr arp_dest_haddr32;
-  u_short arp_dest_haddr16;
-  struct in_addr arp_dest_paddr;
+  u_short arp_opcode;
+  u_char src_mac[6];
+  // u_int32_t arp_src_haddr32;
+  // u_short arp_src_haddr16;
+  u_int32_t arp_src_paddr;
+  u_char dest_mac[6];
+  // u_int32_t arp_dest_haddr32;
+  // u_short arp_dest_haddr16;
+  u_int32_t arp_dest_paddr;
 };
-#define ARP_SRC_HADDR(arp)                                                     \
-  ((((arp)->arp_src_haddr32) << 16) | ((arp)->arp_src_haddr16))
-#define ARP_DEST_HADDR(arp)                                                    \
-  ((((arp)->arp_dest_haddr32) << 16) | ((arp)->arp_dest_haddr16))
+// #define ARP_SRC_HADDR(arp)                                                     \
+//   ((((arp)->arp_src_haddr32) << 16) | ((arp)->arp_src_haddr16))
+// #define ARP_DEST_HADDR(arp)                                                    \
+//   ((((arp)->arp_dest_haddr32) << 16) | ((arp)->arp_dest_haddr16))
 
 /************************************************************************************
  * Transport layer

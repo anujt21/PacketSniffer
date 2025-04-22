@@ -32,6 +32,7 @@ void IPProcessor::process(const u_int8_t *packet, size_t length,
     std::cout << "Protocol: IP\n";
     std::cout << "From:       " << inet_ntoa(ip->ip_src) << "\n";
     std::cout << "To:         " << inet_ntoa(ip->ip_dst) << "\n";
+    std::cout << "\n";
   }
 
   const u_int8_t *payload = packet + ip_size;

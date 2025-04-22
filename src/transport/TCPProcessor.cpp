@@ -21,6 +21,7 @@ void TCPProcessor::process(const u_int8_t *packet, size_t length,
     std::cout << "Protocol: TCP\n";
     std::cout << "Soruce port:        " << ntohs(tcp->th_sport) << "\n";
     std::cout << "Desitnation port:   " << ntohs(tcp->th_dport) << "\n";
+    std::cout << "\n";
   }
 
   u_char *payload = (u_char *)(packet + tcp_size);
