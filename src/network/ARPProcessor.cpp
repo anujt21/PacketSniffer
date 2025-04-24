@@ -12,7 +12,7 @@
 
 void ARPProcessor::process(const u_int8_t *packet, size_t length,
                            std::shared_ptr<PacketContext> context) {
-  if (length < sizeof(struct arp_hdr)) {
+  if (length < SIZE_ARP) {
     std::cerr << "Packet length " << length
               << " bytes too short for ARP protocol" << sizeof(arp_hdr) << "\n";
     std::cerr << "\n";
@@ -20,10 +20,6 @@ void ARPProcessor::process(const u_int8_t *packet, size_t length,
   }
 
   const struct arp_hdr *arp = (struct arp_hdr *)(packet);
-
-  // int src_haddr = ARP_SRC_HADDR(arp);
-  // int dest_haddr = ARP_DEST_HADDR(arp);
-  std::cout << arp->arp_opcode;
 
   if (context->verbose) {
     // packet info

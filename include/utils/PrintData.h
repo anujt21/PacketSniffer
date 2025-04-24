@@ -16,6 +16,8 @@ void print_app_usage();
 
 std::string print_ip(u_int32_t ip);
 
+std::string print_ipv6(const u_short *ip);
+
 std::string print_mac(uint64_t mac);
 
 std::string print_mac(const u_char mac[6]);

@@ -4,6 +4,7 @@
 #include "network/ARPProcessor.h"
 #include "network/EcpriProcessor.h"
 #include "network/IPProcessor.h"
+#include "network/IPV6Processor.h"
 #include <cstddef>
 #include <memory>
 
@@ -42,6 +43,7 @@ void EthernetProcessor::register_handlers() {
   registry.register_network(ETHERTYPE_ECPRI,
                             std::make_shared<ECPRIProcessor>());
   registry.register_network(ETHERTYPE_ARP, std::make_shared<ARPProcessor>());
+  registry.register_network(ETHERTYPE_IPV6, std::make_shared<IPV6Processor>());
 }
 
 void EthernetProcessor::print_header(const struct eth_hdr *eth_header) {

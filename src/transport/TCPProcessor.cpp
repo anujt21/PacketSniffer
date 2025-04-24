@@ -25,7 +25,7 @@ void TCPProcessor::process(const u_int8_t *packet, size_t length,
   }
 
   u_char *payload = (u_char *)(packet + tcp_size);
-  int payload_size = context->ip_payload_len - context->ip_size - tcp_size;
+  int payload_size = length - tcp_size;
 
   if (payload_size > 0) {
     std::cout << "Payload (" << payload_size << " bytes): \n";

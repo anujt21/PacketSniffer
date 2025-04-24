@@ -15,8 +15,6 @@ public:
   bool verbose = false;
   u_int64_t packet_count = 0;
   int link_type = DLT_EN10MB;
-  int ip_size = 0;
-  int ip_payload_len = 0;
 };
 
 class PacketProcessor {

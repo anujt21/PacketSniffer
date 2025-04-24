@@ -93,6 +93,19 @@ std::string print_ip(u_int32_t ip) {
   return ss.str();
 }
 
+std::string print_ipv6(const u_short ip[8]) {
+  // Extract each byte and print in dotted decimal format
+  std::stringstream ss;
+  ss << std::hex << std::setfill('0');
+  for (int i = 0; i < 8; i++) {
+    ss << std::setw(4) << static_cast<int>(ip[i]);
+    if (i != 7) {
+      ss << ":";
+    }
+  }
+  return ss.str();
+}
+
 std::string print_mac(uint64_t mac) {
   std::stringstream ss;
   ss << std::hex << std::setfill('0');
