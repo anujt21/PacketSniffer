@@ -55,17 +55,6 @@ struct ipv6_hdr {
 #define IPV6_TC(ip) ((((ip)->ipv6_v_tc_fl) >> 4) & 0x00000ff)
 #define IPV6_FL(ip) (((ip)->ipv6_v_tc_fl) >> 12)
 
-// ECPRI header
-#define ETHERTYPE_ECPRI 0xAEFE
-
-struct ecpri_hdr {
-  u_char ecpri_prc;
-  u_char ecpri_msg_type;
-  u_short ecpri_size;
-};
-#define ECPRI_REV(ecpri) (((ecpri)->ecpri_prc) >> 4)
-#define ECPRI_C(ecpri) (((ecpri)->ecpri_prc) & 0x01)
-
 // ARP header
 #define SIZE_ARP 28
 struct arp_hdr {

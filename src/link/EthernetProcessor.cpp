@@ -1,4 +1,5 @@
 #include "link/EthernetProcessor.h"
+#include "EcpriProtocols.h"
 #include "Protocols.h"
 #include "base/ProtocolRegistry.h"
 #include "network/ARPProcessor.h"

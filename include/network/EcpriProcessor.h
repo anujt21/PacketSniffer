@@ -10,6 +10,10 @@ class ECPRIProcessor : public PacketProcessor {
 public:
   void process(const u_int8_t *packet, size_t length,
                std::shared_ptr<PacketContext> context) override;
+  void process_iq_data(const u_int8_t *packet, size_t length,
+                       std::shared_ptr<PacketContext> context);
+  void process_bit_seq(const u_int8_t *packet, size_t length,
+                       std::shared_ptr<PacketContext> context);
 
   std::string get_name() const override { return "eCPRI"; }
 
