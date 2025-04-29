@@ -12,6 +12,9 @@ void packet_handler(u_char *user_data, const struct pcap_pkthdr *pkthdr,
   std::shared_ptr<PacketContext> context(packet_context_ptr,
                                          [](PacketContext *) {});
   context->packet_count++;
+  std::cout << "***************************************************************"
+               "****\n";
+  std::cout << "PACKET NUMBER: " << context->packet_count << "\n";
 
   auto &registry = ProtocolRegistry::get_instance();
   auto link_processor = registry.get_link_processor(context->link_type);

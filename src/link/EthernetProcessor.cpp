@@ -1,7 +1,11 @@
 #include "link/EthernetProcessor.h"
+#include "EcpriProtocols.h"
 #include "Protocols.h"
 #include "base/ProtocolRegistry.h"
+#include "network/ARPProcessor.h"
+#include "network/EcpriProcessor.h"
 #include "network/IPProcessor.h"
+#include "network/IPV6Processor.h"
 #include <cstddef>
 #include <memory>
 
@@ -30,13 +34,17 @@ void EthernetProcessor::process(const u_int8_t *packet, size_t length,
     network_processor->process(payload, payload_length, context);
   } else {
     std::cerr << "No network processor found for network type: " << ether_type
-              << std::endl;
+              << "\n\n";
   }
 }
 
 void EthernetProcessor::register_handlers() {
   auto &registry = ProtocolRegistry::get_instance();
   registry.register_network(ETHERTYPE_IP, std::make_shared<IPProcessor>());
+  registry.register_network(ETHERTYPE_ECPRI,
+                            std::make_shared<ECPRIProcessor>());
+  registry.register_network(ETHERTYPE_ARP, std::make_shared<ARPProcessor>());
+  registry.register_network(ETHERTYPE_IPV6, std::make_shared<IPV6Processor>());
 }
 
 void EthernetProcessor::print_header(const struct eth_hdr *eth_header) {

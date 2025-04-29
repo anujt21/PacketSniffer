@@ -5,17 +5,13 @@
 #include <pcap.h>
 #include <sys/types.h>
 
-// Ethernet addresses are of 6 bytes
-#define ETHER_ADDR_LEN 6
-
-// Ethernet header size
-#define SIZE_ETHERNET 14
-
 /************************************************************************************
  * Link layer
  ************************************************************************************/
 
 // Ethernet header
+#define ETHER_ADDR_LEN 6
+#define SIZE_ETHERNET 14
 struct eth_hdr {
   u_char ether_dhost[ETHER_ADDR_LEN];
   u_char ether_shost[ETHER_ADDR_LEN];
@@ -45,8 +41,41 @@ struct ip_hdr {
 #define IP_HL(ip) (((ip)->ip_vhl) & 0x0f)
 #define IP_V(ip) (((ip)->ip_vhl) >> 4)
 
-// ECPRI header
-struct ecpri_hdr {};
+// IPV6 header
+#define SIZE_IPV6 40
+struct ipv6_hdr {
+  u_int32_t ipv6_v_tc_fl;
+  u_short ipv6_payload_len;
+  u_char ipv6_next_hdr;
+  u_char ipv6_hoplimit;
+  u_short ipv6_src_addr[8];
+  u_short ipv6_dest_addr[8];
+};
+#define IPV6_V(ip) (((ip)->ipv6_v_tc_fl) & 0x0000000f)
+#define IPV6_TC(ip) ((((ip)->ipv6_v_tc_fl) >> 4) & 0x00000ff)
+#define IPV6_FL(ip) (((ip)->ipv6_v_tc_fl) >> 12)
+
+// ARP header
+#define SIZE_ARP 28
+struct arp_hdr {
+  u_short arp_htype;
+  u_short arp_ptype;
+  u_char arp_hlen;
+  u_char arp_plen;
+  u_short arp_opcode;
+  u_char src_mac[6];
+  // u_int32_t arp_src_haddr32;
+  // u_short arp_src_haddr16;
+  u_int32_t arp_src_paddr;
+  u_char dest_mac[6];
+  // u_int32_t arp_dest_haddr32;
+  // u_short arp_dest_haddr16;
+  u_int32_t arp_dest_paddr;
+};
+// #define ARP_SRC_HADDR(arp)                                                     \
+//   ((((arp)->arp_src_haddr32) << 16) | ((arp)->arp_src_haddr16))
+// #define ARP_DEST_HADDR(arp)                                                    \
+//   ((((arp)->arp_dest_haddr32) << 16) | ((arp)->arp_dest_haddr16))
 
 /************************************************************************************
  * Transport layer

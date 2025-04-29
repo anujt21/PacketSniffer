@@ -2,6 +2,7 @@
 #include <cctype>
 #include <iomanip>
 #include <iostream>
+#include <string>
 
 void print_app_usage() {
   std::cout << APP_NAME << " - " << APP_DESC << "\n";
@@ -31,7 +32,7 @@ void print_hex_ascii_line(const u_char *payload, int len, int offset) {
 
   if (len < 16) {
     gap = 16 - len;
-    std::cout << std::setw(gap * 3) << "";
+    printf("%*s", gap * 3, "");
   }
 
   std::cout << " ";
@@ -81,4 +82,49 @@ void print_payload(const u_char *payload, int len) {
     }
   }
   std::cout << "\n";
+}
+
+std::string print_ip(u_int32_t ip) {
+  // Extract each byte and print in dotted decimal format
+  std::stringstream ss;
+  ss << ((ip >> 24) & 0xFF) << "." << ((ip >> 16) & 0xFF) << "."
+     << ((ip >> 8) & 0xFF) << "." << (ip & 0xFF);
+
+  return ss.str();
+}
+
+std::string print_ipv6(const u_short ip[8]) {
+  // Extract each byte and print in dotted decimal format
+  std::stringstream ss;
+  ss << std::hex << std::setfill('0');
+  for (int i = 0; i < 8; i++) {
+    ss << std::setw(4) << static_cast<int>(ip[i]);
+    if (i != 7) {
+      ss << ":";
+    }
+  }
+  return ss.str();
+}
+
+std::string print_mac(uint64_t mac) {
+  std::stringstream ss;
+  ss << std::hex << std::setfill('0');
+  ss << std::setw(2) << ((mac >> 40) & 0xFF) << ":" << std::setw(2)
+     << ((mac >> 32) & 0xFF) << ":" << std::setw(2) << ((mac >> 24) & 0xFF)
+     << ":" << std::setw(2) << ((mac >> 16) & 0xFF) << ":" << std::setw(2)
+     << ((mac >> 8) & 0xFF) << ":" << std::setw(2) << (mac & 0xFF);
+  ss << std::dec; // Reset to decimal output
+
+  return ss.str();
+}
+
+std::string print_mac(const u_char mac[6]) {
+  std::stringstream ss;
+  ss << std::hex << std::setfill('0');
+  for (int i = 0; i < 6; i++) {
+    ss << std::setw(2) << static_cast<int>(mac[i]);
+    if (i < 5)
+      ss << ":";
+  }
+  return ss.str();
 }

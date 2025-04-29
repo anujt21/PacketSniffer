@@ -16,10 +16,10 @@ void IPProcessor::process(const u_int8_t *packet, size_t length,
     std::cerr << "Packet too short for IP header." << std::endl;
     return;
   }
+
   const struct ip_hdr *ip = (struct ip_hdr *)(packet);
   int ip_size = IP_HL(ip) * 4;
-  context->ip_size = ip_size;
-  context->ip_payload_len = ntohs(ip->ip_len);
+
   if (ip_size < 20) {
     std::cerr << "Invalid IP header length: " << ip_size << " bytes"
               << std::endl;
