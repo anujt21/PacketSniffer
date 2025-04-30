@@ -98,7 +98,7 @@ std::string print_ipv6(const u_short ip[8]) {
   std::stringstream ss;
   ss << std::hex << std::setfill('0');
   for (int i = 0; i < 8; i++) {
-    ss << std::setw(4) << static_cast<int>(ip[i]);
+    ss << std::setw(4) << static_cast<int>(ntohs(ip[i]));
     if (i != 7) {
       ss << ":";
     }
