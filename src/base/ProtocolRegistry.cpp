@@ -22,6 +22,11 @@ void ProtocolRegistry::register_transport(
   transport_processors[transport_type] = processor;
 }
 
+void ProtocolRegistry::register_session(
+    int session_type, std::shared_ptr<PacketProcessor> processor) {
+  session_processors[session_type] = processor;
+}
+
 std::shared_ptr<PacketProcessor>
 ProtocolRegistry::get_link_processor(int link_type) {
   auto it = link_processors.find(link_type);
@@ -44,6 +49,15 @@ std::shared_ptr<PacketProcessor>
 ProtocolRegistry::get_transport_processor(u_int8_t transport_type) {
   auto it = transport_processors.find(transport_type);
   if (it != transport_processors.end()) {
+    return it->second;
+  }
+  return nullptr;
+}
+
+std::shared_ptr<PacketProcessor>
+ProtocolRegistry::get_session_processor(int session_type) {
+  auto it = session_processors.find(session_type);
+  if (it != session_processors.end()) {
     return it->second;
   }
   return nullptr;
@@ -77,10 +91,22 @@ void ProtocolRegistry::list_registered_handlers() const {
   std::cout << "Registered tansport handlers: \n";
   for (const auto &[transport_type, processor] : transport_processors) {
     if (processor) {
-      std::cout << "Protocl type: " << transport_type;
+      std::cout << "Protocol type: " << transport_type;
       std::cout << ", processor name: " << processor->get_name() << std::endl;
     } else {
       std::cout << "Protocl type: " << transport_type;
+      std::cout << ", processor name: Not found" << std::endl;
+    }
+  }
+
+  // Registered session processors
+  std::cout << "Registered session handlers: \n";
+  for (const auto &[session_type, processor] : session_processors) {
+    if (processor) {
+      std::cout << "Protocol type: " << session_type;
+      std::cout << ", processor name: " << processor->get_name() << std::endl;
+    } else {
+      std::cout << "Protocol type: " << session_type;
       std::cout << ", processor name: Not found" << std::endl;
     }
   }

@@ -20,6 +20,7 @@ void EthernetProcessor::process(const u_int8_t *packet, size_t length,
   u_short ether_type = ntohs(ethernet->ether_type);
 
   if (context->verbose) {
+    std::cout << "Protocol: Ethernet\n";
     print_header(ethernet);
   }
 
@@ -71,29 +72,8 @@ void EthernetProcessor::print_header(const struct eth_hdr *eth_header) {
   // Print EtherType (in hex)
   std::cout << "EtherType: 0x" << std::hex << std::setw(4) << std::setfill('0')
             << ntohs(eth_header->ether_type) << std::endl;
-
   // Reset stream format
   std::cout << std::dec;
 
-  // Optionally interpret common EtherTypes
-  switch (ntohs(eth_header->ether_type)) {
-  case 0x0800:
-    std::cout << "Protocol: IPv4" << std::endl;
-    break;
-  case 0x0806:
-    std::cout << "Protocol: ARP" << std::endl;
-    break;
-  case 0x86DD:
-    std::cout << "Protocol: IPv6" << std::endl;
-    break;
-  case 0x8100:
-    std::cout << "Protocol: VLAN tagged" << std::endl;
-    break;
-  case 0xAEFE: // Example value for eCPRI
-    std::cout << "Protocol: eCPRI" << std::endl;
-    break;
-  default:
-    std::cout << "Protocol: Other" << std::endl;
-  }
   std::cout << "\n";
 }

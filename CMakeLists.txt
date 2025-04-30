@@ -29,6 +29,7 @@ file(GLOB SOURCES
   ${CMAKE_SOURCE_DIR}/src/network/*.cpp
   ${CMAKE_SOURCE_DIR}/src/link/*.cpp
   ${CMAKE_SOURCE_DIR}/src/transport/*.cpp
+  ${CMAKE_SOURCE_DIR}/src/session/*.cpp
   ${CMAKE_SOURCE_DIR}/src/utils/*.cpp
   ${CMAKE_SOURCE_DIR}/src/*.cpp
   ${CMAKE_SOURCE_DIR}/main.cpp

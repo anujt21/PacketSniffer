@@ -7,8 +7,8 @@
 #include "utils/PrintData.h"
 #include <arpa/inet.h>
 #include <cstddef>
-#include <memory>
-#include <netinet/in.h>
+// #include <memory>
+// #include <netinet/in.h>
 #include <sys/types.h>
 
 void IPV6Processor::process(const u_int8_t *packet, size_t length,
@@ -21,14 +21,12 @@ void IPV6Processor::process(const u_int8_t *packet, size_t length,
   const struct ipv6_hdr *ipv6 = (struct ipv6_hdr *)(packet);
   int ipv6_traffic_class = IPV6_TC(ipv6);
   int ipv6_flow_label = IPV6_FL(ipv6);
-  print_ipv6(ipv6->ipv6_dest_addr);
 
   if (context->verbose) {
-    std::cout << "Protocol: IPV6";
-    std::cout << "IPV6 soruce address: " << print_ipv6(ipv6->ipv6_src_addr)
+    std::cout << "Protocol: IPV6\n";
+    std::cout << "Soruce address: " << print_ipv6(ipv6->ipv6_src_addr) << "\n";
+    std::cout << "Destination address: " << print_ipv6(ipv6->ipv6_dest_addr)
               << "\n";
-    std::cout << "IPV6 destination address: "
-              << print_ipv6(ipv6->ipv6_dest_addr) << "\n";
     std::cout << "\n";
   }
 
