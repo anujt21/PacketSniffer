@@ -3,6 +3,7 @@
 
 #include <netinet/in.h>
 #include <pcap.h>
+#include <string>
 #include <sys/types.h>
 
 /************************************************************************************
@@ -82,6 +83,7 @@ struct arp_hdr {
  ************************************************************************************/
 
 // TCP header
+#define MIN_TCP_SIZE 20
 struct tcp_hdr {
   u_short th_sport; // source sport
   u_short th_dport; // dest sport
@@ -103,5 +105,29 @@ struct tcp_hdr {
   u_short th_urp; // urgent pointer
 };
 #define TH_OFF(th) (((th)->th_offx2 & 0xf0) >> 4)
+
+/************************************************************************************
+ * Transport layer
+ ************************************************************************************/
+
+// TLS header
+#define MIN_TLS_SIZE 5
+#define TCP_TLS 0x0300
+
+enum tls_protocol_versions {
+  SSL_3_0 = 0x0300,
+  TLS_1_0 = 0x0301,
+  TLS_1_1 = 0x0302,
+  TLS_1_2 = 0x0303,
+  TLS_1_3 = 0x0304,
+};
+
+#pragma pack(push, 1)
+struct tls_hdr {
+  u_char content_type;
+  u_short protocol_version;
+  u_short length;
+};
+#pragma pack(pop)
 
 #endif

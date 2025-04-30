@@ -40,6 +40,7 @@ void IPProcessor::process(const u_int8_t *packet, size_t length,
   auto transport_processor = registry.get_transport_processor(ip->ip_p);
 
   if (transport_processor) {
+    transport_processor->register_handlers();
     transport_processor->process(payload, payload_length, context);
   } else {
     std::cerr << "Transport processor not found for tranpsort type "
